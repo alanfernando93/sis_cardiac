@@ -6,5 +6,7 @@
             "email": "alanfernando93.am@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "twbs/bootstrap": "4.3.1"
+    }
 }
