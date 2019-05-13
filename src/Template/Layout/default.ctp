@@ -12,46 +12,68 @@
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = 'SisCardiac';
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
-    
-    <?= $this->Html->css('bootstrap.min.css') ?>
-    <?= $this->Html->script(['bootstrap.min.js', 'jquery-3.4.1.min.js']) ?>
-    
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-</head>
-<body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
-        </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
-            </ul>
+    <head>
+        <meta charset="utf-8">
+        <?= $this->Html->charset() ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>
+            <?= $cakeDescription ?>:
+            <?= $this->fetch('title') ?>
+        </title>
+        <?= $this->Html->meta('icon') ?>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <?=
+        $this->Html->css([
+          'bootstrap.min.css',
+          'sb-admin-2.min.css'])
+        ?>
+        <?= $this->fetch('meta') ?>
+        <?= $this->fetch('css') ?>
+    </head>
+    <body>
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <?= $this->element('sidebar') ?>
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <?= $this->element('topbar') ?>
+
+                    <?= $this->Flash->render() ?>
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <?= $this->fetch('content') ?>
+
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+                <?= $this->element('footer') ?>
+
+            </div>
+            <!-- End of Content Wrapper -->
+
         </div>
-    </nav>
-    <?= $this->Flash->render() ?>
-    <div class="container clearfix">
-        <?= $this->fetch('content') ?>
-    </div>
-    <footer>
-    </footer>
-</body>
+        <!-- End of Page Wrapper -->
+
+        <?=
+        $this->Html->script([
+          'jquery.min.js',
+          'bootstrap.bundle.min.js',
+          'jquery.easing.min.js',
+          'sb-admin-2.min.js'])
+        ?>
+        <?= $this->fetch('script') ?>
+    </body>
 </html>

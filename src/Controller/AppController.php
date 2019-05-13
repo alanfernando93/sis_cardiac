@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,8 +13,10 @@
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
+use Cake\Error\Debugger;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 
@@ -25,31 +28,72 @@ use Cake\Event\Event;
  *
  * @link https://book.cakephp.org/3.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller
-{
+class AppController extends Controller {
 
-    /**
-     * Initialization hook method.
-     *
-     * Use this method to add common initialization code like loading components.
-     *
-     * e.g. `$this->loadComponent('Security');`
-     *
-     * @return void
+  /**
+   * Initialization hook method.
+   *
+   * Use this method to add common initialization code like loading components.
+   *
+   * e.g. `$this->loadComponent('Security');`
+   *
+   * @return void
+   */
+  public function initialize() {
+    parent::initialize();
+
+    $this->loadComponent('RequestHandler', [
+      'enableBeforeRedirect' => false,
+    ]);
+    $this->loadComponent('Flash');
+    $this->loadComponent('Auth', [
+      'flash' => [
+        'element' => 'error',
+        'key' => 'auth',
+        'params' => [
+          'class' => 'alert alert-danger'
+        ]
+      ],
+      'authorize' => ['Controller'],
+      'authenticate' => [
+        'Form' => [
+          'fields' => [
+            'email' => 'email',
+            'password' => 'password'
+          ]
+        ]
+      ],
+      'loginAction' => [
+        'controller' => 'Personal',
+        'action' => 'login'
+      ],
+      'authError' => 'Ingrese sus datos',
+      'loginRedirect' => [
+        'controller' => 'Pages',
+        'action' => 'home'
+      ],
+      'logoutRedirect' => [
+        'controller' => 'Personal',
+        'action' => 'login'
+      ]
+    ]);
+
+    /*
+     * Enable the following component for recommended CakePHP security settings.
+     * see https://book.cakephp.org/3.0/en/controllers/components/security.html
      */
-    public function initialize()
-    {
-        parent::initialize();
+    //$this->loadComponent('Security');
+  }
 
-        $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false,
-        ]);
-        $this->loadComponent('Flash');
+  public function beforeFilter(Event $event) {
+    $this->Auth->allow(['add', 'logout']);
+  }
 
-        /*
-         * Enable the following component for recommended CakePHP security settings.
-         * see https://book.cakephp.org/3.0/en/controllers/components/security.html
-         */
-        //$this->loadComponent('Security');
+  public function isAuthorized($user) {
+    if (isset($user)) {
+      return true;
     }
+    return false;
+  }
+
 }
