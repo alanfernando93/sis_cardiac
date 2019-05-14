@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Auth\DefaultPasswordHasher;
-use Cake\Error\Debugger;
 
 /**
  * Personal Controller
@@ -102,20 +100,10 @@ class PersonalController extends AppController {
   }
 
   public function login() {
-    $hasher = new DefaultPasswordHasher();
     $this->viewBuilder()->setLayout('signin');
     if ($this->request->is('post')) {
-//      $data = $this->Personal->find('all')
-//              ->where([
-//                'email' => $this->request->getData('email'),
-//                'password' => $password
-//              ])
-//              ->first();
-      //$user = $this->Auth->identify();
       $user = $this->Personal->identify($this->request->getData());;
       if ($user) {
-
-        Debugger::dump($user);
         $this->Auth->setUser($user);
         return $this->redirect($this->Auth->redirectUrl());
       } else {
@@ -133,8 +121,6 @@ class PersonalController extends AppController {
   }
 
   public function isAuthorized($user) {
-    die($user);
-
     return parent::isAuthorized($user);
   }
 

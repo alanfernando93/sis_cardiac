@@ -87,6 +87,8 @@ class AppController extends Controller {
 
   public function beforeFilter(Event $event) {
     $this->Auth->allow(['add', 'logout']);
+    $this->set('title_page', 'SisCardiac');
+    $this->set('current_user', $this->Auth->user());
   }
 
   public function isAuthorized($user) {

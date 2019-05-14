@@ -4,12 +4,12 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 /**
- * Resports Controller
+ * Reports Controller
  *
  *
  * @method \App\Model\Entity\Resport[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class ResportsController extends AppController
+class ReportsController extends AppController
 {
     /**
      * Index method
@@ -18,9 +18,9 @@ class ResportsController extends AppController
      */
     public function index()
     {
-        $resports = $this->paginate($this->Resports);
+        $reports = $this->paginate($this->Reports);
 
-        $this->set(compact('resports'));
+        $this->set(compact('reports'));
     }
 
     /**
@@ -32,11 +32,11 @@ class ResportsController extends AppController
      */
     public function view($id = null)
     {
-        $resport = $this->Resports->get($id, [
+        $report = $this->Reports->get($id, [
             'contain' => []
         ]);
 
-        $this->set('resport', $resport);
+        $this->set('report', $report);
     }
 
     /**
@@ -46,17 +46,17 @@ class ResportsController extends AppController
      */
     public function add()
     {
-        $resport = $this->Resports->newEntity();
+        $report = $this->Reports->newEntity();
         if ($this->request->is('post')) {
-            $resport = $this->Resports->patchEntity($resport, $this->request->getData());
-            if ($this->Resports->save($resport)) {
-                $this->Flash->success(__('The resport has been saved.'));
+            $report = $this->Reports->patchEntity($report, $this->request->getData());
+            if ($this->Reports->save($report)) {
+                $this->Flash->success(__('The report has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The resport could not be saved. Please, try again.'));
+            $this->Flash->error(__('The report could not be saved. Please, try again.'));
         }
-        $this->set(compact('resport'));
+        $this->set(compact('report'));
     }
 
     /**
@@ -68,19 +68,19 @@ class ResportsController extends AppController
      */
     public function edit($id = null)
     {
-        $resport = $this->Resports->get($id, [
+        $report = $this->Reports->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $resport = $this->Resports->patchEntity($resport, $this->request->getData());
-            if ($this->Resports->save($resport)) {
-                $this->Flash->success(__('The resport has been saved.'));
+            $report = $this->Reports->patchEntity($report, $this->request->getData());
+            if ($this->Reports->save($report)) {
+                $this->Flash->success(__('The report has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The resport could not be saved. Please, try again.'));
+            $this->Flash->error(__('The report could not be saved. Please, try again.'));
         }
-        $this->set(compact('resport'));
+        $this->set(compact('report'));
     }
 
     /**
@@ -93,11 +93,11 @@ class ResportsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $resport = $this->Resports->get($id);
-        if ($this->Resports->delete($resport)) {
-            $this->Flash->success(__('The resport has been deleted.'));
+        $report = $this->Reports->get($id);
+        if ($this->Reports->delete($report)) {
+            $this->Flash->success(__('The report has been deleted.'));
         } else {
-            $this->Flash->error(__('The resport could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The report could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
