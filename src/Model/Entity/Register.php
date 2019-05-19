@@ -30,9 +30,6 @@ class Register extends Entity
      * @var array
      */
     protected $_accessible = [
-        'code' => true,
-        'family_mobile' => true,
-        'family_name' => true,
         'created' => true,
         'modified' => true,
         'personal_id' => true,
