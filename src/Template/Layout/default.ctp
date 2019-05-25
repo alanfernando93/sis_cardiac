@@ -30,7 +30,8 @@ $cakeDescription = 'SisCardiac';
         $this->Html->css([
           'bootstrap.min.css',
           'sb-admin-2.min.css',
-          'dataTables.bootstrap4.min.css'])
+          'dataTables.bootstrap4.min.css',
+          'style.css'])
         ?>
         <?=
         $this->Html->script([
@@ -80,7 +81,8 @@ $cakeDescription = 'SisCardiac';
           'sb-admin-2.min.js',
           'jquery.dataTables.min.js',
           'dataTables.bootstrap4.min.js',
-          'datatables-demo.js'])
+          'datatables-demo.js',
+          'jquery.steps.js'])
         ?>
         <?= $this->fetch('script') ?>
     </body>

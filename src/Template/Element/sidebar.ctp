@@ -12,7 +12,7 @@
   <li class="nav-item active">
     <?=
     $this->Html->link('<i class="fas fa-fw fa-tachometer-alt"></i>
-      <span>Dashboard</span>', ['controller' => 'pages', 'action' => 'display'], ['class' => 'nav-link', 'escape' => false])
+      <span>Dashboard</span>', ['controller' => 'pages', 'action' => 'home'], ['class' => 'nav-link', 'escape' => false])
     ?>
   </li>
 

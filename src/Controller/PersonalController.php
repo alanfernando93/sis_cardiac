@@ -102,7 +102,7 @@ class PersonalController extends AppController {
   public function login() {
     $this->viewBuilder()->setLayout('signin');
     if ($this->request->is('post')) {
-      $user = $this->Personal->identify($this->request->getData());;
+      $user = $this->Personal->identify($this->request->getData());
       if ($user) {
         $this->Auth->setUser($user);
         return $this->redirect($this->Auth->redirectUrl());

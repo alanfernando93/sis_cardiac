@@ -46,7 +46,7 @@ class PatientsController extends AppController {
   public function add() {
     $patient = $this->Patients->newEntity();
     if ($this->request->is('post')) {
-      $patient = $this->Patients->patchEntity($patient, $this->request->getData(), ['associated'=> ['Users']]);
+      $patient = $this->Patients->patchEntity($patient, $this->request->getData(), ['associated' => ['Users']]);
       if ($this->Patients->save($patient)) {
         $this->Flash->success(__('The patient has been saved.'));
 
