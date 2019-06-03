@@ -21,8 +21,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Monitor patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Monitor[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Monitor findOrCreate($search, callable $callback = null, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MonitorsTable extends Table
 {
@@ -40,15 +38,11 @@ class MonitorsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->belongsTo('Personal', [
-            'foreignKey' => 'personal_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'personal_id'
         ]);
         $this->belongsTo('Patients', [
-            'foreignKey' => 'patient_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'patient_id'
         ]);
         $this->hasMany('Reports', [
             'foreignKey' => 'monitor_id'
@@ -68,9 +62,15 @@ class MonitorsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->allowEmptyString('description', false);
+            ->scalar('value')
+            ->maxLength('value', 255)
+            ->requirePresence('value', 'create')
+            ->allowEmptyString('value', false);
+
+        $validator
+            ->scalar('time')
+            ->maxLength('time', 255)
+            ->allowEmptyString('time');
 
         return $validator;
     }

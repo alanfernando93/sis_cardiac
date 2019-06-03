@@ -107,11 +107,6 @@
   });
 </script> 
 
-<script type="text/javascript">
-  $(function () {
-    $(document).ready(function () {
-      var ultimox;
-      var ultimoy;
 //      function generateData() {
 //        var array=[];
 //        for (i = 0; i < 20; i++) {
@@ -123,8 +118,14 @@
 //        return array;
 //      };
 //      var data = generateData();
+<script type="text/javascript">
+  $(function () {
+    $(document).ready(function () {
+      var ultimox;
+      var ultimoy;
       $.ajax({
         url: '/sis_cardiac/data-rest',
+        type: 'get',
         success: function (DatosRecuperados) {
           DatosRecuperados = JSON.parse(DatosRecuperados);
           $.each(DatosRecuperados, function (i, o) {
@@ -174,35 +175,35 @@
         }
       })
 
-      setInterval(function () {
-        $.get("/sis_cardiac/data-rest", function (UltimosDatos) {
-          UltimosDatos = JSON.parse(UltimosDatos);
-          var varlocalx = parseFloat(UltimosDatos[0].x);
-          var varlocaly = parseFloat(UltimosDatos[0].y);
-
-          if ((getx() != varlocalx) && (gety() != varlocaly)) {
-
-            series.addPoint([varlocalx, varlocaly], true, true);
-            setx(varlocalx);
-            sety(varlocaly);
-          }
-        });
-      }, 1000);
-
-      function getx() {
-        return ultimox;
-      }
-      function gety() {
-        return ultimoy;
-      }
-      function setx(x) {
-        ultimox = x;
-      }
-      function sety(y) {
-        ultimoy = y;
-      }
     });
 
+    setInterval(function () {
+      $.get("/sis_cardiac/data-rest/update", function (UltimosDatos) {
+        UltimosDatos = JSON.parse(UltimosDatos);
+        var varlocalx = parseFloat(UltimosDatos[0].x);
+        var varlocaly = parseFloat(UltimosDatos[0].y);
+
+        if ((getx() != varlocalx) && (gety() != varlocaly)) {
+
+          series.addPoint([varlocalx, varlocaly], true, true);
+          setx(varlocalx);
+          sety(varlocaly);
+        }
+      });
+    }, 1000);
+
+    function getx() {
+      return ultimox;
+    }
+    function gety() {
+      return ultimoy;
+    }
+    function setx(x) {
+      ultimox = x;
+    }
+    function sety(y) {
+      ultimoy = y;
+    }
   });
 
 </script>

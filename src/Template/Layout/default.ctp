@@ -36,7 +36,8 @@ $cakeDescription = 'SisCardiac';
         <?=
         $this->Html->script([
           'jquery.min.js',
-          'highcharts.js'])
+          'highcharts.js',
+          'exports.js'])
         ?>
         <?= $this->fetch('meta') ?>
         <?= $this->fetch('css') ?>

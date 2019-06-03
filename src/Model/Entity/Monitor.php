@@ -7,11 +7,10 @@ use Cake\ORM\Entity;
  * Monitor Entity
  *
  * @property int $id
- * @property string $description
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
- * @property int $personal_id
- * @property int $patient_id
+ * @property string $value
+ * @property string|null $time
+ * @property int|null $personal_id
+ * @property int|null $patient_id
  *
  * @property \App\Model\Entity\Personal $personal
  * @property \App\Model\Entity\Patient $patient
@@ -29,9 +28,8 @@ class Monitor extends Entity
      * @var array
      */
     protected $_accessible = [
-        'description' => true,
-        'created' => true,
-        'modified' => true,
+        'value' => true,
+        'time' => true,
         'personal_id' => true,
         'patient_id' => true,
         'personal' => true,

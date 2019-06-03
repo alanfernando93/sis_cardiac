@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Network\Response;
+use Cake\ORM\TableRegistry;
 
 /**
  * DataRest Controller
@@ -24,12 +25,20 @@ class DataRestController extends AppController {
    * @return \Cake\Http\Response|void
    */
   public function index() {
-    $data = [
-      0 => [
-        'x' => rand(0, 100),
-        'y' => time() * 1000,
-    ]];
+    $monitors = TableRegistry::getTableLocator()->get('Monitors');
+    $data = $monitors->find()
+            ->order(['id' => 'ASC']);
+    $data->select(['x' => 'value', 'y' => 'time']);
     $this->jsonResponse($data);
+  }
+
+  public function update() {
+    $monitors = TableRegistry::getTableLocator()->get('Monitors');
+    $data = $monitors->find()
+            ->order(['id' => 'DESC'])
+            ->limit(1);
+    $data->select(['x' => 'value', 'y' => 'time']);
+    $this->jsonResponse($data);            
   }
 
   public function jsonResponse($responseData = [], $responseStatusCode = 200) {

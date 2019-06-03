@@ -14,6 +14,7 @@ class CreateReports extends AbstractMigration {
   public function change() {
     $table = $this->table('reports');
     $table->addColumn('file', 'text')
+            ->addColumn('description', 'text')
             ->addColumn('path', 'string', ['limit' => 250])
             ->addColumn('created', 'datetime', [
               'default' => null,
