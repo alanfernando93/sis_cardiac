@@ -14,6 +14,11 @@
 </div>
 <div class="container">
   <?= $this->Form->create($monitor) ?>
+  <?= $this->Form->hidden('value', ['value' => '0']) ?>
+  <?= $this->Form->hidden('time', ['value' => '0']) ?>
+  <?= $this->Form->hidden('personal_id', ['value' => $current_user['id']]) ?>
+  <?= $this->Form->hidden('report.path', ['value' => WWW_ROOT . 'files/']) ?>
+  <?= $this->Form->hidden('report.file', ['value' => 'monitors-' . round(microtime(true) * 1000)]) ?>
   <div id="wizard">
     <!-- SECTION 1 -->
     <h4></h4>
@@ -25,9 +30,8 @@
           ?>
         </div>
         <div class="form-holder w-100">
-          <label class="control-label" for="report-patient"><?= _('Description') ?></label>
           <?php
-          echo $this->Form->textarea('report.description', ['id' => 'report-patient']);
+          echo $this->Form->control('report.description', ['id' => 'report-patient']);
           ?>
         </div>
       </div>
@@ -47,12 +51,12 @@
       <div class="form-row">
         <div class="form-holder">
           <?php
-          echo $this->Form->input('report.path', ['disabled' => true, 'value' => WWW_ROOT . 'csv' . DS])
+          echo $this->Form->control('report.path', ['disabled' => true, 'value' => 'webroot/files/'])
           ?>
         </div>
         <div class="form-holder">
           <?php
-          echo $this->Form->control('report.file', ['disabled' => true, 'value' => round(microtime(true) * 1000)])
+          echo $this->Form->control('report.file', ['disabled' => true, 'value' => 'monitors-' . round(microtime(true) * 1000)])
           ?>
         </div>
       </div>

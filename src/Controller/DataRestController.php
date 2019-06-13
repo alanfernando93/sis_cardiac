@@ -28,7 +28,11 @@ class DataRestController extends AppController {
     $monitors = TableRegistry::getTableLocator()->get('Monitors');
     $data = $monitors->find()
             ->order(['id' => 'ASC']);
-    $data->select(['x' => 'value', 'y' => 'time']);
+    if ($data->count() > 0) {
+      $data->select(['x' => 'value', 'y' => 'time']);
+    } else {
+      $data = [['x' => '0', 'y' => '0']];
+    };
     $this->jsonResponse($data);
   }
 
@@ -38,7 +42,7 @@ class DataRestController extends AppController {
             ->order(['id' => 'DESC'])
             ->limit(1);
     $data->select(['x' => 'value', 'y' => 'time']);
-    $this->jsonResponse($data);            
+    $this->jsonResponse($data);
   }
 
   public function jsonResponse($responseData = [], $responseStatusCode = 200) {

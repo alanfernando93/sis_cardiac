@@ -21,5 +21,6 @@ class DatabaseSeed extends AbstractSeed
     {
         $this->call('CreateUserAdminSeed');
         $this->call('CreatePersonalSeed');
+        $this->call('CreateMonitorsSeed');
     }
 }

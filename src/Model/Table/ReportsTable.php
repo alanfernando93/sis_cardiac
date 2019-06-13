@@ -41,8 +41,7 @@ class ReportsTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Monitors', [
-            'foreignKey' => 'monitor_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'monitor_id'
         ]);
     }
 
@@ -62,6 +61,11 @@ class ReportsTable extends Table
             ->scalar('file')
             ->requirePresence('file', 'create')
             ->allowEmptyFile('file', false);
+
+        $validator
+            ->scalar('description')
+            ->requirePresence('description', 'create')
+            ->allowEmptyString('description', false);
 
         $validator
             ->scalar('path')

@@ -43,4 +43,8 @@
         <h4><?= __('File') ?></h4>
         <?= $this->Text->autoParagraph(h($report->file)); ?>
     </div>
+    <div class="row">
+        <h4><?= __('Description') ?></h4>
+        <?= $this->Text->autoParagraph(h($report->description)); ?>
+    </div>
 </div>

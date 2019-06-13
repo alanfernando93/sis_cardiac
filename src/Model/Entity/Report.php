@@ -8,10 +8,11 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $file
+ * @property string $description
  * @property string $path
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
- * @property int $monitor_id
+ * @property int|null $monitor_id
  *
  * @property \App\Model\Entity\Monitor $monitor
  */
@@ -28,6 +29,7 @@ class Report extends Entity
      */
     protected $_accessible = [
         'file' => true,
+        'description' => true,
         'path' => true,
         'created' => true,
         'modified' => true,

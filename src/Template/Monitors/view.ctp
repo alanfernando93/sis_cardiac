@@ -23,6 +23,14 @@
     <h3><?= h($monitor->id) ?></h3>
     <table class="vertical-table">
         <tr>
+            <th scope="row"><?= __('Value') ?></th>
+            <td><?= h($monitor->value) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Time') ?></th>
+            <td><?= h($monitor->time) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Personal') ?></th>
             <td><?= $monitor->has('personal') ? $this->Html->link($monitor->personal->id, ['controller' => 'Personal', 'action' => 'view', $monitor->personal->id]) : '' ?></td>
         </tr>
@@ -34,19 +42,7 @@
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($monitor->id) ?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($monitor->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($monitor->modified) ?></td>
-        </tr>
     </table>
-    <div class="row">
-        <h4><?= __('Description') ?></h4>
-        <?= $this->Text->autoParagraph(h($monitor->description)); ?>
-    </div>
     <div class="related">
         <h4><?= __('Related Reports') ?></h4>
         <?php if (!empty($monitor->reports)): ?>
@@ -54,6 +50,7 @@
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('File') ?></th>
+                <th scope="col"><?= __('Description') ?></th>
                 <th scope="col"><?= __('Path') ?></th>
                 <th scope="col"><?= __('Created') ?></th>
                 <th scope="col"><?= __('Modified') ?></th>
@@ -64,6 +61,7 @@
             <tr>
                 <td><?= h($reports->id) ?></td>
                 <td><?= h($reports->file) ?></td>
+                <td><?= h($reports->description) ?></td>
                 <td><?= h($reports->path) ?></td>
                 <td><?= h($reports->created) ?></td>
                 <td><?= h($reports->modified) ?></td>

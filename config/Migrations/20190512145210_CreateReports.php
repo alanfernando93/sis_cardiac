@@ -17,17 +17,17 @@ class CreateReports extends AbstractMigration {
             ->addColumn('description', 'text')
             ->addColumn('path', 'string', ['limit' => 250])
             ->addColumn('created', 'datetime', [
-              'default' => null,
-              'null' => false,
+                'default' => null,
+                'null' => false,
             ])
             ->addColumn('modified', 'datetime', [
-              'default' => null,
-              'null' => false,
+                'default' => null,
+                'null' => false,
     ]);
     $table->create();
 
     $refTable = $this->table('reports');
-    $refTable->addColumn('monitor_id', 'integer', ['signed' => 'disable'])
+    $refTable->addColumn('monitor_id', 'integer', ['signed' => 'disable', 'default' => null, 'null' => true])
             ->addForeignKey('monitor_id', 'monitors', 'id', ['delete' => 'CASCADE', 'update' => 'NO_ACTION']);
     $refTable->update();
   }

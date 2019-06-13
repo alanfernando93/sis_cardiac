@@ -24,8 +24,9 @@
         <legend><?= __('Edit Report') ?></legend>
         <?php
             echo $this->Form->control('file');
+            echo $this->Form->control('description');
             echo $this->Form->control('path');
-            echo $this->Form->control('monitor_id', ['options' => $monitors]);
+            echo $this->Form->control('monitor_id', ['options' => $monitors, 'empty' => true]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
