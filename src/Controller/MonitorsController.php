@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\View\ViewBuilder;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
 
 /**
  * Monitors Controller
@@ -32,7 +35,7 @@ class MonitorsController extends AppController {
    */
   public function view($id = null) {
     $monitor = $this->Monitors->get($id, [
-      'contain' => []
+        'contain' => []
     ]);
 
     $this->set('monitor', $monitor);
@@ -46,13 +49,28 @@ class MonitorsController extends AppController {
   public function add() {
     $monitor = $this->Monitors->newEntity();
     if ($this->request->is('post')) {
-      $monitor = $this->Monitors->patchEntity($monitor, $this->request->getData());
-      if ($this->Monitors->save($monitor)) {
-        $this->Flash->success(__('The monitor has been saved.'));
-
-        return $this->redirect(['action' => 'index']);
+      $monitor = $this->Monitors->patchEntity($monitor, $this->request->getData(), ['associated' => ['Reports']]);
+      $monitor_all = $this->Monitors->find('all');
+      $monitor_data = $monitor_all->toArray();
+      $data = [];
+      $data[] = ['id', 'value', 'time', 'personal_id', 'patient_id'];
+      foreach ($monitor_data as $row) {
+        $data[] = [
+            $row['id'],
+            $row['value'],
+            $row['time'],
+            $this->Auth->user()['id'],
+            $monitor->patient_id,
+        ];
       }
-      $this->Flash->error(__('The monitor could not be saved. Please, try again.'));
+      $this->export($data);
+
+//      if ($this->Monitors->save($monitor)) {
+//        $this->Monitors->delete($monitor_all);
+//        $this->Flash->success(__('The monitor has been saved.'));
+//        return $this->redirect(['action' => 'index']);
+//      }
+//      $this->Flash->error(__('The monitor could not be saved. Please, try again.'));
     }
     $patients = $this->Monitors->Patients->find('all')->contain(['Users']);
 
@@ -64,6 +82,36 @@ class MonitorsController extends AppController {
     $this->set('patient', $data);
   }
 
+  public function export() {
+    $dir = new Folder(WWW_ROOT . 'files' . DS . 'pathtofolder', true, 0644);
+    $data = [
+        ['a', 'b', 'c'],
+        [1, 2, 3],
+        ['you', 'and', 'me'],
+    ];
+    // Your data array
+// Params
+    $_serialize = 'data';
+    $_delimiter = ',';
+    $_enclosure = '"';
+    $_newline = '\r\n';
+
+// Create the builder
+    $builder = new ViewBuilder;
+    $builder
+            ->setLayout(false)
+            ->setClassName('CsvView.Csv');
+
+// Then the view
+    $view = $builder->build($data);
+    $view->set(compact('data', '_serialize', '_delimiter', '_enclosure', '_newline'));
+
+// And Save the file
+//    $file = new File('/home/anonymous/Documentos/test.php', true, 0777);
+//    $file->write('holjlajslkfjasjfjlfñfkdj');
+    $this->render(false);
+  }
+
   /**
    * Edit method
    *
@@ -73,7 +121,7 @@ class MonitorsController extends AppController {
    */
   public function edit($id = null) {
     $monitor = $this->Monitors->get($id, [
-      'contain' => []
+        'contain' => []
     ]);
     if ($this->request->is(['patch', 'post', 'put'])) {
       $monitor = $this->Monitors->patchEntity($monitor, $this->request->getData());

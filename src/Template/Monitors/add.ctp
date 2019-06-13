@@ -13,55 +13,53 @@
   <h1 class="h3 mb-0 text-gray-800"><?= __('Examinar') ?></h1>
 </div>
 <div class="container">
-  <form action="">
-    <div id="wizard">
-      <!-- SECTION 1 -->
-      <h4></h4>
-      <section>
-        <div class="form-header">
-          <div class="form-group">
-            <?= $this->Form->create($monitor) ?>
-            <?php
-            echo $this->Form->control('description', ['div' => ['class' => 'form-holder active']]);
-            echo $this->Form->control('patient_id', ['options' => $patient, 'div' => ['class' => 'form-holder active']]);
-            ?>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-          </div>
+  <?= $this->Form->create($monitor) ?>
+  <div id="wizard">
+    <!-- SECTION 1 -->
+    <h4></h4>
+    <section>
+      <div class="form-row">
+        <div class="form-holder">
+          <?php
+          echo $this->Form->control('patient_id', ['options' => $patient]);
+          ?>
         </div>
-      </section>
+        <div class="form-holder w-100">
+          <label class="control-label" for="report-patient"><?= _('Description') ?></label>
+          <?php
+          echo $this->Form->textarea('report.description', ['id' => 'report-patient']);
+          ?>
+        </div>
+      </div>
+    </section>
 
-      <!-- SECTION 2 -->
-      <h4></h4>
-      <section>
-        <div class="charts">
-          <div id="container" style="width: calc(100% - 35%); height: 400px; margin: 0"></div>
-        </div>
-      </section>
+    <!-- SECTION 2 -->
+    <h4></h4>
+    <section>
+      <div class="charts">
+        <div id="container" style="width: calc(100% - 35%); height: 400px; margin: 0"></div>
+      </div>
+    </section>
 
-      <!-- SECTION 3 -->
-      <h4></h4>
-      <section>
-
-        <div class="form-row">
-          <div class="form-holder">
-            <input type="text" placeholder="Street Name" class="form-control">
-          </div>
-          <div class="form-holder">
-            <input type="text" placeholder="Street Number" class="form-control">
-          </div>
+    <!-- SECTION 3 -->
+    <h4></h4>
+    <section>
+      <div class="form-row">
+        <div class="form-holder">
+          <?php
+          echo $this->Form->input('report.path', ['disabled' => true, 'value' => WWW_ROOT . 'csv' . DS])
+          ?>
         </div>
-        <div class="form-row">
-          <div class="form-holder">
-            <input type="text" placeholder="City" class="form-control">
-          </div>
-          <div class="form-holder">
-            <input type="text" placeholder="Country" class="form-control">
-          </div>
+        <div class="form-holder">
+          <?php
+          echo $this->Form->control('report.file', ['disabled' => true, 'value' => round(microtime(true) * 1000)])
+          ?>
         </div>
-      </section>
-    </div>
-  </form>
+      </div>
+    </section>
+  </div>
+  <?= $this->Form->button(__('Submit'), ['class' => 'd-none']) ?>
+  <?= $this->Form->end() ?>
 </div>
 
 <script type="text/javascript">
@@ -79,6 +77,9 @@
           $('.actions ul').removeClass('actions-next');
         }
         return true;
+      },
+      onFinished: function (event, currentIndex) {
+        $('button[type="submit"]').click();
       },
       labels: {
         finish: "Finish",
@@ -107,17 +108,6 @@
   });
 </script> 
 
-//      function generateData() {
-//        var array=[];
-//        for (i = 0; i < 20; i++) {
-//          array[i] = {
-//            'x': (new Date().getTime() * 1000) * (i + 1),
-//            'y': Math.random() * (100 - 0) + 0,
-//          };
-//        }
-//        return array;
-//      };
-//      var data = generateData();
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
@@ -182,16 +172,13 @@
         UltimosDatos = JSON.parse(UltimosDatos);
         var varlocalx = parseFloat(UltimosDatos[0].x);
         var varlocaly = parseFloat(UltimosDatos[0].y);
-
         if ((getx() != varlocalx) && (gety() != varlocaly)) {
-
           series.addPoint([varlocalx, varlocaly], true, true);
           setx(varlocalx);
           sety(varlocaly);
         }
       });
     }, 1000);
-
     function getx() {
       return ultimox;
     }
@@ -205,5 +192,4 @@
       ultimoy = y;
     }
   });
-
 </script>

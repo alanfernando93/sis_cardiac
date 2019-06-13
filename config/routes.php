@@ -102,3 +102,4 @@ Router::extensions('json');
  * });
  * ```
  */
+Router::extensions('csv');
