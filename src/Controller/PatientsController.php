@@ -65,7 +65,7 @@ class PatientsController extends AppController {
    */
   public function edit($id = null) {
     $patient = $this->Patients->get($id, [
-      'contain' => []
+      'contain' => ['Users']
     ]);
     if ($this->request->is(['patch', 'post', 'put'])) {
       $patient = $this->Patients->patchEntity($patient, $this->request->getData());
