@@ -8,7 +8,7 @@
 <div class="container">
   <div class="row">
     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-      <h1 class="h3 mb-0 text-gray-800"><?= __('Nuevo Paciente') ?></h1>
+      <h1 class="h3 mb-0 text-gray-800"><?= __('Editar Paciente') ?></h1>
     </div>
   </div>
   <?= $this->Form->create($patient) ?>

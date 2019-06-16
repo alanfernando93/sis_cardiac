@@ -47,7 +47,6 @@
               <td><?= h($report->modified) ?></td>
               <td>
                 <?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-eye']), ['action' => 'view', $report->id], ['escape' => false]) ?>
-                <?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-pen']), ['action' => 'edit', $report->id], ['escape' => false]) ?>
                 <?= $this->Form->postLink($this->Html->tag('i', '', ['class' => 'fas fa-trash']), ['action' => 'delete', $report->id], ['escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $report->id)]) ?>
               </td>
             </tr>

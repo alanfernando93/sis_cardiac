@@ -31,7 +31,8 @@
         </div>
         <div class="form-holder w-100">
           <?php
-          echo $this->Form->control('report.description', ['id' => 'report-patient']);
+          echo $this->Form->label('report.description');
+          echo $this->Form->textarea('report.description', ['id' => 'report-patient']);
           ?>
         </div>
       </div>

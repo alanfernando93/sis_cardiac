@@ -18,7 +18,9 @@ class PersonalController extends AppController {
    * @return \Cake\Http\Response|void
    */
   public function index() {
-    $personal = $this->paginate($this->Personal);
+    $personal = $this->paginate($this->Personal, [
+        'contain' => ['Users']
+    ]);
 
     $this->set(compact('personal'));
   }
@@ -32,7 +34,7 @@ class PersonalController extends AppController {
    */
   public function view($id = null) {
     $personal = $this->Personal->get($id, [
-      'contain' => []
+        'contain' => ['Users']
     ]);
 
     $this->set('personal', $personal);
@@ -46,7 +48,7 @@ class PersonalController extends AppController {
   public function add() {
     $personal = $this->Personal->newEntity();
     if ($this->request->is('post')) {
-      $personal = $this->Personal->patchEntity($personal, $this->request->getData());
+      $personal = $this->Personal->patchEntity($personal, $this->request->getData(), ['associated' => ['Users']]);
       if ($this->Personal->save($personal)) {
         $this->Flash->success(__('The personal has been saved.'));
 
@@ -66,7 +68,7 @@ class PersonalController extends AppController {
    */
   public function edit($id = null) {
     $personal = $this->Personal->get($id, [
-      'contain' => []
+        'contain' => ['Users']
     ]);
     if ($this->request->is(['patch', 'post', 'put'])) {
       $personal = $this->Personal->patchEntity($personal, $this->request->getData());

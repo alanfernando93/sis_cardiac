@@ -71,7 +71,6 @@ class PatientsController extends AppController {
       $patient = $this->Patients->patchEntity($patient, $this->request->getData());
       if ($this->Patients->save($patient)) {
         $this->Flash->success(__('The patient has been saved.'));
-
         return $this->redirect(['action' => 'index']);
       }
       $this->Flash->error(__('The patient could not be saved. Please, try again.'));

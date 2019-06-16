@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Patient $patient
  */
 ?>
-
 <div class="container">
   <div class="row">
     <div class="d-sm-flex align-items-center justify-content-start mb-4">
