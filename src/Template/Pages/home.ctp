@@ -5,61 +5,74 @@
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>   
 
 <script type="text/javascript">
-  $(function () {
+    function getData(n) {
+    var arr = [],
+        i,
+        x,
+        a,
+        b,
+        c,
+        spike;
+    for (
+        i = 0, x = Date.UTC(new Date().getUTCFullYear(), 0, 1) - n * 36e5;
+        i < n;
+        i = i + 1, x = x + 36e5
+    ) {
+        if (i % 100 === 0) {
+            a = 2 * Math.random();
+        }
+        if (i % 1000 === 0) {
+            b = 2 * Math.random();
+        }
+        if (i % 10000 === 0) {
+            c = 2 * Math.random();
+        }
+        if (i % 50000 === 0) {
+            spike = 10;
+        } else {
+            spike = 0;
+        }
+        arr.push([
+            x,
+            2 * Math.sin(i / 100) + a + b + c + spike + Math.random()
+        ]);
+    }
+    return arr;
+}
+var n = 1000,
+data = getData(n);
+console.log(data);
+
+console.time('line');
+$(function () {
     $(document).ready(function () {
-      $('#container').highcharts({
-        chart: {
-          type: 'spline',
-          inverted: true
-        },
-        title: {
-          text: 'Atmosphere Temperature by Altitude'
-        },
-        subtitle: {
-          text: 'According to the Standard Atmosphere Model'
-        },
-        xAxis: {
-          reversed: false,
-          title: {
-            enabled: true,
-            text: 'Altitude'
-          },
-          labels: {
-            format: '{value} km'
-          },
-          maxPadding: 0.05,
-          showLastLabel: true
-        },
-        yAxis: {
-          title: {
-            text: 'Temperature'
-          },
-          labels: {
-            format: '{value}°'
-          },
-          lineWidth: 2
-        },
-        legend: {
-          enabled: false
-        },
-        tooltip: {
-          headerFormat: '<b>{series.name}</b><br/>',
-          pointFormat: '{point.x} km: {point.y}°C'
-        },
-        plotOptions: {
-          spline: {
-            marker: {
-              enable: false
-            }
-          }
-        },
-        series: [{
-            name: 'Temperature',
-            data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
-              [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]]
-          }]
-      });
+        $('#container').highcharts({
+            chart: {
+                zoomType: 'x',
+            },
+            title: {
+                text: 'Highcharts drawing ' + n + ' points'
+            },
+
+            subtitle: {
+                text: 'Using the Boost module'
+            },
+
+            tooltip: {
+                valueDecimals: 1
+            },
+
+            xAxis: {
+                type: 'datetime',       
+                tickPixelInterval: 150
+            },
+
+            series: [{
+                data: data,
+                name: 'Hourly data points'
+            }]
+        });
     });
-  });
+});
 
 </script>

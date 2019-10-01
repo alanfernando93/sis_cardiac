@@ -122,21 +122,23 @@
         url: '/sis_cardiac/data-rest',
         type: 'get',
         success: function (DatosRecuperados) {
+          
+          var datos = [];
           DatosRecuperados = JSON.parse(DatosRecuperados);
+          DatosRecuperados.forEach(row => {
+            datos.push([new Date(row['y']).getTime(), parseInt(row['x'])]);
+          })
+          DatosRecuperados = datos;
+          
+          console.log(DatosRecuperados)
           $.each(DatosRecuperados, function (i, o) {
-            if (o.x) {
-              DatosRecuperados[i].x = parseInt(o.x);
-            }
-            if (o.y) {
-              DatosRecuperados[i].y = parseFloat(o.y);
-            }
-
-            setx(DatosRecuperados[(DatosRecuperados.length) - 1].x);
-            sety(DatosRecuperados[(DatosRecuperados.length) - 1].y);
+            
+            //setx(DatosRecuperados[(DatosRecuperados.length) - 1].x);
+            //sety(DatosRecuperados[(DatosRecuperados.length) - 1].y);
 
             $('#container').highcharts({
               chart: {
-                type: 'spline',
+                zoomType: 'x',
                 animation: Highcharts.svg,
                 marginRight: 10,
                 events: {load: function () {
@@ -147,16 +149,15 @@
                 text: 'Monitor en tiempo real',
                 align: 'left'
               },
-              xAxis: {tickPixelInterval: 150},
-              yAxis: {title: {text: 'Value'},
-                plotLines: [{value: 0, width: 1, color: '#808080'}]
+              xAxis: {
+                type: 'datetime',       
+                tickPixelInterval: 100,
               },
-              tooltip: {
-                formatter: function () {
-                  return '<b>' + this.series.name + '</b><br/>' +
-                          Highcharts.numberFormat(this.x, 2) + '<br/>' +
-                          Highcharts.numberFormat(this.y, 2);
-                }
+              yAxis: {
+                title: {
+                    text: 'Signos vilates',
+                },
+                tickPixelInterval: 50,
               },
               legend: {
                 enabled: false
@@ -164,7 +165,9 @@
               exporting: {
                 enabled: false
               },
-              series: [{name: 'Random data', data: DatosRecuperados}]
+              series: [{
+                name: 'Random data', 
+                data: DatosRecuperados}]
             });
           });
         }
@@ -174,14 +177,22 @@
 
     setInterval(function () {
       $.get("/sis_cardiac/data-rest/update", function (UltimosDatos) {
+        
         UltimosDatos = JSON.parse(UltimosDatos);
-        var varlocalx = parseFloat(UltimosDatos[0].x);
-        var varlocaly = parseFloat(UltimosDatos[0].y);
-        if ((getx() != varlocalx) && (gety() != varlocaly)) {
-          series.addPoint([varlocalx, varlocaly], true, true);
-          setx(varlocalx);
-          sety(varlocaly);
-        }
+        console.log(UltimosDatos)
+        var datos = [new Date(UltimosDatos[0].y).getTime(), parseInt(UltimosDatos[0].x)];
+        
+        
+        // DATOS REALES
+        var sig_cardiac = parseInt(UltimosDatos[0].x);
+        var timestamp = (new Date(UltimosDatos[0].y)).getTime();
+        
+        // DATOS ALEATORIOS
+        //var sig_cardiac = parseInt(Math.random() * (250 - 50) + 50, 10);
+        //var timestamp = (new Date()).getTime();
+        UltimosDatos = datos;
+        console.log([timestamp, sig_cardiac])
+        series.addPoint([timestamp, sig_cardiac]);
       });
     }, 1000);
     function getx() {
