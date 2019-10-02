@@ -64,6 +64,7 @@
     </section>
   </div>
   <?= $this->Form->button(__('Submit'), ['class' => 'd-none']) ?>
+  <input type='button'  class='d-none' id='event_data_chart' value='event ajax'/>
   <?= $this->Form->end() ?>
 </div>
 
@@ -76,6 +77,10 @@
       enableAllSteps: true,
       transitionEffectSpeed: 500,
       onStepChanging: function (event, currentIndex, newIndex) {
+        
+        if (currentIndex == 0) {
+          document.getElementById('event_data_chart').click();
+        }
         if (newIndex >= 1) {
           $('.actions ul').addClass('actions-next');
         } else {
@@ -115,6 +120,7 @@
 
 <script type="text/javascript">
   $(function () {
+    var series;
     $(document).ready(function () {
       var ultimox;
       var ultimoy;
@@ -124,13 +130,16 @@
         success: function (DatosRecuperados) {
           
           var datos = [];
-          DatosRecuperados = JSON.parse(DatosRecuperados);
+          //console.log(DatosRecuperados)
+          if (!Array.isArray(DatosRecuperados)) {
+            DatosRecuperados = JSON.parse(DatosRecuperados);
+          }
+          
           DatosRecuperados.forEach(row => {
             datos.push([new Date(row['y']).getTime(), parseInt(row['x'])]);
           })
           DatosRecuperados = datos;
           
-          console.log(DatosRecuperados)
           $.each(DatosRecuperados, function (i, o) {
             
             //setx(DatosRecuperados[(DatosRecuperados.length) - 1].x);
@@ -167,34 +176,42 @@
               },
               series: [{
                 name: 'Random data', 
+                withLine: 0.2,
                 data: DatosRecuperados}]
             });
           });
         }
       })
 
+
     });
 
-    setInterval(function () {
-      $.get("/sis_cardiac/data-rest/update", function (UltimosDatos) {
-        
-        UltimosDatos = JSON.parse(UltimosDatos);
-        console.log(UltimosDatos)
-        var datos = [new Date(UltimosDatos[0].y).getTime(), parseInt(UltimosDatos[0].x)];
-        
-        
-        // DATOS REALES
-        var sig_cardiac = parseInt(UltimosDatos[0].x);
-        var timestamp = (new Date(UltimosDatos[0].y)).getTime();
-        
-        // DATOS ALEATORIOS
-        //var sig_cardiac = parseInt(Math.random() * (250 - 50) + 50, 10);
-        //var timestamp = (new Date()).getTime();
-        UltimosDatos = datos;
-        console.log([timestamp, sig_cardiac])
-        series.addPoint([timestamp, sig_cardiac]);
-      });
-    }, 1000);
+    $('#event_data_chart').click(function() {
+      setInterval(function () {
+        $.get("/sis_cardiac/data-rest/update", function (UltimosDatos) {
+          
+          if (!Array.isArray(UltimosDatos)) {
+            UltimosDatos = JSON.parse(UltimosDatos);
+          }
+          
+          var datos = [new Date(UltimosDatos[0].y).getTime(), parseInt(UltimosDatos[0].x)];
+          
+          
+          // DATOS REALES
+          var sig_cardiac = parseInt(UltimosDatos[0].x);
+          var timestamp = (new Date(UltimosDatos[0].y)).getTime();
+          
+          // DATOS ALEATORIOS
+          //var sig_cardiac = parseInt(Math.random() * (250 - 50) + 50, 10);
+          //var timestamp = (new Date()).getTime();
+          
+          UltimosDatos = datos;
+          console.log([timestamp, sig_cardiac])
+          series.addPoint([timestamp, sig_cardiac]);
+        });
+      }, 500);
+    })
+    
     function getx() {
       return ultimox;
     }
